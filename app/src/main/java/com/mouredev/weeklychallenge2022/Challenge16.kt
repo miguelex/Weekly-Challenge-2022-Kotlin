@@ -18,3 +18,19 @@ package com.mouredev.weeklychallenge2022
  * - Subiré una posible solución al ejercicio el lunes siguiente al de su publicación.
  *
  */
+
+fun main() {
+    CapitalizeFirstLetter("este es Un texto de prueba del último reto");
+}
+
+private fun CapitalizeFirstLetter(words: String){
+
+    var capitalizedText = words;
+    var text = words.replace("[^A-zÀ-ú]".toRegex(), " ").split(" ");
+
+    text.forEach { word ->
+        capitalizedText = capitalizedText.replace(word, word.replaceFirstChar { it.uppercase() })
+    }
+
+    print(capitalizedText);
+}
