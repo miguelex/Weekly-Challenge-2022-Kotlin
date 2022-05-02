@@ -1,5 +1,9 @@
 package com.mouredev.weeklychallenge2022
 
+import java.text.SimpleDateFormat
+import java.util.concurrent.TimeUnit
+import kotlin.math.absoluteValue
+
 /*
  * Reto #15
  * ¿CUÁNTOS DÍAS?
@@ -20,4 +24,35 @@ package com.mouredev.weeklychallenge2022
  * - Subiré una posible solución al ejercicio el lunes siguiente al de su publicación.
  *
  */
+class DaysError: Exception()
 
+fun main() {
+    daysBetween("02/05/2022", "03/09/1975"); // 17042
+    daysBetween("", "03/09/1975") // Error en el parseo
+    daysBetween("02/05/2022", "3/9/1975") // Error en el formato fecha
+}
+
+fun daysBetween (dateOne: String, dateTwo: String) {
+
+    try {
+        println ("El numero de dias entre las dos fechas es de: ${countDays(dateOne, dateTwo)}");
+    } catch (e:Exception){
+        println ("Error en el parseo")
+    } catch (e: DaysError) {
+        println("Error en el formato de alguna fecha")
+    }
+}
+
+private fun countDays(dateOne: String, dateTwo: String): Int{
+
+    val pattern = SimpleDateFormat("dd/MM/yyyy");
+    val regex = "^([0-9]){2}[/]([0-9]){2}[/]([0-9]){4}$".toRegex()
+
+    if(pattern.parse(dateOne) != null &&
+        pattern.parse(dateOne) != null &&
+        dateOne.contains(regex) &&
+        dateTwo.contains(regex)){
+            return TimeUnit.DAYS.convert(pattern.parse(dateOne).time - pattern.parse(dateTwo).time, TimeUnit.MILLISECONDS).toInt().absoluteValue;
+    }
+    throw DaysError()
+}
